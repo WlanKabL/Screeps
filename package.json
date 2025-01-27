@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "screeps-api": "^1.16.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "@types/screeps": "^3.3.8"
+  }
+}
