@@ -1,15 +1,26 @@
-const harvester = require('role.harvester');
+import { runSpawnManager } from './spawnManager';
+import { runHarvester } from './role.harvester';
+import { runUpgrader } from './role.upgrader';
 
-module.exports.loop = function () {
-    console.log("Neuer Spieltick gestartet");
+export const loop = (): void => {
+    for (const name in Memory.creeps) {
+        if (!Game.creeps[name]) {
+            console.log(`💀 Creep ${name} entfernt`);
+            delete Memory.creeps[name];
+        }
+    }
 
-    Game.spawns["Spawn1"].spawnCreep([WORK, CARRY, MOVE], "Harvester2");
+    const spawn = Game.spawns['Spawn1'];
+    if (spawn) {
+        runSpawnManager(spawn);
+    }
 
-    for (let name in Game.creeps) {
-        let creep = Game.creeps[name];
-
-        if (creep.body[0].type === WORK) {
-            harvester.run(creep)
+    for (const name in Game.creeps) {
+        const creep = Game.creeps[name];
+        if (creep.memory.role === 'harvester') {
+            runHarvester(creep);
+        } else if (creep.memory.role === 'upgrader') {
+            runUpgrader(creep);
         }
     }
 };

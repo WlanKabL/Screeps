@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "screeps-api": "^1.16.1"
+    "screeps-api": "^1.16.1",
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
     "@types/node": "^22.10.10",
