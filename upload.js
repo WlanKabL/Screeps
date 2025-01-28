@@ -4,7 +4,16 @@ const { execSync } = require('child_process');
 
 // Define paths
 const distDir = path.join(__dirname, 'dist');  // TypeScript output directory
-const destinationDir = 'C:\\Users\\XXX\\AppData\\Local\\Screeps\\scripts\\XXX\\default';
+const destinations = [
+    {
+        name: 'mac',
+        path: '/Users/XXX/Library/Application Support/Screeps/scripts/XXX/default'
+    },
+    {
+        name: 'windows',
+        path: 'C:\\Users\\XXX\\AppData\\Local\\Screeps\\scripts\\XXX\\default'
+    }
+];
 
 // Function to compile TypeScript to JavaScript
 function compileTypeScript() {
@@ -22,17 +31,17 @@ function compileTypeScript() {
 function copyFiles(srcDir, destDir) {
     if (!fs.existsSync(srcDir)) {
         console.error(`❌ Source directory not found: ${srcDir}`);
-        return;
+        return false;
     }
     if (!fs.existsSync(destDir)) {
         console.error(`❌ Destination directory not found: ${destDir}`);
-        return;
+        return false;
     }
 
     const files = fs.readdirSync(srcDir);
     if (files.length === 0) {
         console.log('⚠️ No files found for upload.');
-        return;
+        return false;
     }
 
     files.forEach(file => {
@@ -43,13 +52,28 @@ function copyFiles(srcDir, destDir) {
         console.log(`✅ File copied: ${file}`);
     });
 
-    console.log('🚀 All files successfully uploaded.');
+    return true;
 }
 
 // Main function to perform the upload process
 function uploadToScreeps() {
     compileTypeScript();
-    copyFiles(distDir, destinationDir);
+
+    let copied = false;
+    for (const destination of destinations) {
+        if (fs.existsSync(destination.path)) {
+            console.log(`🌍 Found destination: ${destination.name}`);
+            if (copyFiles(distDir, destination.path)) {
+                console.log(`🚀 Files successfully copied to ${destination.name}`);
+                copied = true;
+                break;
+            }
+        }
+    }
+
+    if (!copied) {
+        console.error('❌ No valid destination found for upload.');
+    }
 }
 
 // Start the upload process
