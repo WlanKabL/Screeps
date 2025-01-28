@@ -31,5 +31,6 @@ type CreepStatus =
 interface CreepMemory {
     role: CreepRole;    // The role assigned to the creep
     upgrading?: boolean; // Indicates if the creep is upgrading the controller
-    status?: CreepStatus;
+    building?: boolean;  // Indicates if the creep is building a construction site
+    status?: CreepStatus; // The current status of the creep
 }

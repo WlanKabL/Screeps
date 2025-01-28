@@ -1,4 +1,8 @@
 export const runHarvester = (creep: Creep): void => {
+    if (creep.memory.role !== "harvester") {
+        return;
+    }
+    
     // If the creep has free capacity, gather energy
     if (creep.store.getFreeCapacity() > 0) {
         const source = creep.pos.findClosestByPath(FIND_SOURCES);
@@ -11,7 +15,7 @@ export const runHarvester = (creep: Creep): void => {
         const harvestResult = creep.harvest(source);
 
         if (harvestResult === ERR_NOT_IN_RANGE) {
-            setMovingState(creep, source, "#ffaa00", "🏃🏼 Moving");
+            setMovingState(creep, source, "#11ff11", "🏃🏼 Moving");
             return;
         }
 
@@ -37,7 +41,7 @@ export const runHarvester = (creep: Creep): void => {
         const transferResult = creep.transfer(target, RESOURCE_ENERGY);
 
         if (transferResult === ERR_NOT_IN_RANGE) {
-            setMovingState(creep, target, "#ffffff", "🏃🏼 Moving");
+            setMovingState(creep, target, "#11ff11", "🏃🏼 Moving");
             return;
         }
 
@@ -49,7 +53,7 @@ export const runHarvester = (creep: Creep): void => {
 
     // If there’s no valid target, move to parking lot
     setIdleState(creep);
-    creep.moveTo(Game.flags["HarvesterParkingLot"]);
+    creep.moveTo(Game.flags["HarvesterParkingLot"], { visualizePathStyle: { stroke: '#ffaa00' }});
 };
 
 // Helper function to set the creep's state to "moving"
