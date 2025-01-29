@@ -7,7 +7,7 @@ const distDir = path.join(__dirname, 'dist');  // TypeScript output directory
 const destinations = [
     {
         name: 'mac',
-        path: '/Users/wlankabl/Library/Application Support/Screeps/scripts/85_215_152_210___21025/default'
+        path: '/Users/XXX/Library/Application Support/Screeps/scripts/XXX/default'
     },
     {
         name: 'windows',
