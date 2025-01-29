@@ -1,16 +1,16 @@
 import { runSpawnManager } from './spawnManager';
 import { runHarvester } from './role.harvester';
 import { runUpgrader } from './role.upgrader';
-import { Visuals } from './visuals';
+import { VisualManager } from './visual.manager';
 import { runBuilder } from './role.builder';
+import { ConstructionManager } from './construction.manager';
 
 export const loop = (): void => {
     for (const roomName in Game.rooms) {
         const room = Game.rooms[roomName];
 
-        // Draw the upgrade overlay for each controlled room
-        Visuals.visualizeConstructionSites(room);
-        Visuals.visualizeController(room);
+        VisualManager.visualizeConstructionSites(room);
+        VisualManager.visualizeController(room);
     }
     
     for (const name in Memory.creeps) {
@@ -32,7 +32,11 @@ export const loop = (): void => {
         } else if (creep.memory.role === 'upgrader') {
             runUpgrader(creep);
         } else if (creep.memory.role === 'builder') {
-            runBuilder(creep);
+            if (ConstructionManager.doesRoomHaveConstruction(creep.room)) {
+                runBuilder(creep);
+            } else {
+                runUpgrader(creep);
+            }
         }
     }
 };

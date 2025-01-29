@@ -13,6 +13,7 @@ export const runSpawnManager = (spawn: StructureSpawn): void => {
     if (energyAvailable >= 300) {
         bodyParts = [WORK, CARRY, MOVE, MOVE]; // Größerer Builder
     } else {
+        return;
         bodyParts = [WORK, CARRY, MOVE]; // Standard Builder
     }
     

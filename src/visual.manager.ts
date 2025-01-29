@@ -1,6 +1,4 @@
-// src/visuals.ts
-
-export const Visuals = {
+export const VisualManager = {
     /**
      * Visualizes the controller progress and ETA for upgrading.
      * @param room The room where the controller is located.

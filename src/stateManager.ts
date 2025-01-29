@@ -1,4 +1,3 @@
-// src/stateManager.ts
 export class StateManager {
     static updateState(creep: Creep, newState: CreepStatus, message?: string): void {
         if (creep.memory.status !== newState) {
