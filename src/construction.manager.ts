@@ -1,14 +1,10 @@
-/**
- * Manages construction sites in the game Screeps.
- */
 export class ConstructionManager {
     /**
-     * Checks if there are any construction sites in the given room.
-     * @param roomName - The name of the room.
-     * @returns True if there are any construction sites in the room, false otherwise.
+     * Checks if there are any construction sites in the room.
+     * @param room The room to check for construction sites.
+     * @returns `true` if there are construction sites, otherwise `false`.
      */
-    static doesRoomHaveConstruction(room: Room): boolean {
-        const constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        return constructionSites.length > 0;
+    static hasConstruction(room: Room): boolean {
+        return room.find(FIND_CONSTRUCTION_SITES).length > 0;
     }
 }

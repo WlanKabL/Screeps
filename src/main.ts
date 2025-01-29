@@ -1,42 +1,26 @@
-import { runSpawnManager } from './spawnManager';
-import { runHarvester } from './role.harvester';
-import { runUpgrader } from './role.upgrader';
-import { VisualManager } from './visual.manager';
-import { runBuilder } from './role.builder';
-import { ConstructionManager } from './construction.manager';
+const TaskManager = require("./Task.manager");
+const SpawnManager = require("./Spawn.manager");
+const HardstuckManager = require("./Hardstuck.manager");
 
 export const loop = (): void => {
-    for (const roomName in Game.rooms) {
-        const room = Game.rooms[roomName];
-
-        VisualManager.visualizeConstructionSites(room);
-        VisualManager.visualizeController(room);
-    }
-    
+    // Cleanup memory of dead creeps
     for (const name in Memory.creeps) {
-        if (!Game.creeps[name]) {
-            console.log(`💀 Creep ${name} entfernt`);
-            delete Memory.creeps[name];
-        }
+        if (!Game.creeps[name]) delete Memory.creeps[name];
     }
 
-    const spawn = Game.spawns['Spawn1'];
-    if (spawn) {
-        runSpawnManager(spawn);
+    // Assign tasks
+    for (const creepName in Game.creeps) {
+        TaskManager.assignTask(Game.creeps[creepName]);
     }
 
-    for (const name in Game.creeps) {
-        const creep = Game.creeps[name];
-        if (creep.memory.role === 'harvester') {
-            runHarvester(creep);
-        } else if (creep.memory.role === 'upgrader') {
-            runUpgrader(creep);
-        } else if (creep.memory.role === 'builder') {
-            if (ConstructionManager.doesRoomHaveConstruction(creep.room)) {
-                runBuilder(creep);
-            } else {
-                runUpgrader(creep);
-            }
-        }
+    // Spawn new creeps
+    for (const spawnName in Game.spawns) {
+        SpawnManager.spawnCreep(Game.spawns[spawnName]);
     }
+
+    // Check for stuck creepsx
+    HardstuckManager.checkHardstuck();
+
+    // Update Visuals
+    TaskManager.updateVisuals();
 };

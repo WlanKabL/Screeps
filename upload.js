@@ -7,7 +7,7 @@ const distDir = path.join(__dirname, 'dist');  // TypeScript output directory
 const destinations = [
     {
         name: 'mac',
-        path: '/Users/XXX/Library/Application Support/Screeps/scripts/XXX/default'
+        path: '/Users/wlankabl/Library/Application Support/Screeps/scripts/85_215_152_210___21025/default'
     },
     {
         name: 'windows',
@@ -19,7 +19,7 @@ const destinations = [
 function compileTypeScript() {
     console.log('🛠️ Compiling TypeScript...');
     try {
-        execSync('npx tsc', { stdio: 'inherit' });
+        execSync('npx tsc --project tsconfig.json', { stdio: 'inherit' });
         console.log('✅ TypeScript compiled successfully.');
     } catch (error) {
         console.error('❌ Error during TypeScript compilation:', error);
